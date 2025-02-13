@@ -31,7 +31,7 @@ def set_background_image_local(image_path):
         unsafe_allow_html=True
     )
 
-set_background_image_local(r"/workspaces/blank-app/bugatti-chiron-super-sport-wallpaper-3840x2160_54.jpg")
+set_background_image_local(r"bugatti-chiron-super-sport-wallpaper-3840x2160_54.jpg")
 
 
 model_car=load_model("MLmodel_name_1.pkl")
