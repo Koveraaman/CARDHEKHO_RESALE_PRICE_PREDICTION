@@ -45,7 +45,7 @@ encoder_model=load_model("encoder_model_car.pkl")
 encoder_transmission=load_model("encoder_transmission.pkl")
 encoder_variantName=load_model("encoder_variantName.pkl")
 
-cd_df=pd.read_csv("/workspaces/blank-app/FINALDATA1 (1).csv")
+cd_df=pd.read_csv("FINALDATA1 (1).csv")
 st.title("Car Price Prediction App")
 
 categorical_features = ["city", "ft", "bt", "transmission", "oem", "model", "variantName", "Insurance Validity"]
