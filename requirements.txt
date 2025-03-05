@@ -2,9 +2,6 @@ scikit-learn
 streamlit
 openpyxl
 xgboost
-numpy
-pandas
-pickle-mixin
 base64
 ChatGoogleGenerativeAI
 ChatPromptTemplate
