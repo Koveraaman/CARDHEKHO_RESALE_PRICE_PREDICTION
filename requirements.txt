@@ -2,4 +2,9 @@ scikit-learn
 streamlit
 openpyxl
 xgboost
-openai
+numpy
+pandas
+pickle-mixin
+base64
+langchain
+langchain-google-genai
