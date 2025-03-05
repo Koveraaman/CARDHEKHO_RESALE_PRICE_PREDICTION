@@ -3,12 +3,9 @@ import pickle
 import numpy as np
 import pandas as pd
 import base64
-import openai
-from openai import OpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
 from sklearn.preprocessing import OrdinalEncoder
-
-# Use Streamlit secrets for API key (recommended)
-client = OpenAI(api_key="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")
 
 @st.cache_resource
 def load_model(model_path):
@@ -117,25 +114,51 @@ with tab1:
         st.markdown(f"### :green[₹ {prediction[0]:,.2f}]")
 
 with tab2:
-    st.title("🤖 Chatbot with Streamlit")
+    st.write("Welcome to the Car Dealership Chatbot! ")
     
+
+
+
+    # Define the chatbot's behavior
+    car_dealership_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", "You are a helpful assistant at a car dealership. "
+                         "You can provide information about car models, pricing, and financing options. "
+                         "Be friendly and informative."),
+            ("placeholder", "{messages}"),
+        ]
+    )
+
+    # Instantiate the chat model
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", api_key="AIzaSyBpufebS9kziyw2coPefRL0wtXDs5wKbjM")
+
+    # Streamlit UI
+    st.title("🚗 Car Dealership Chatbot")
+    st.write("Ask me anything about car models, pricing, and financing options!")
+
+    # Chat history
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+       st.session_state["messages"] = []
+
+    # Display previous chat messages
+    for message in st.session_state["messages"]:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # User input
+    user_input = st.chat_input("Ask me a question...")
+    if user_input:
+        st.session_state["messages"].append({"role": "user", "content": user_input})
     
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+        with st.chat_message("user"):
+            st.markdown(user_input)
     
-    if user_input := st.chat_input("Type your message..."):
-        st.chat_message("user").markdown(user_input)
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": user_input}]
-        )
-        bot_reply = response.choices[0].message.content
-        
+        # Get response from chatbot
+        messages = [{"role": msg["role"], "content": msg["content"]} for msg in st.session_state["messages"]]
+        response = llm.invoke(messages)
+    
         with st.chat_message("assistant"):
-            st.markdown(bot_reply)
-        st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            st.markdown(response.content)
+    
+       # Store assistant response
+        st.session_state["messages"].append({"role": "assistant", "content": response.content})
