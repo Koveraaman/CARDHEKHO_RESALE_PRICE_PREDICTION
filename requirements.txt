@@ -4,3 +4,5 @@ openpyxl
 xgboost
 ChatGoogleGenerativeAI
 ChatPromptTemplate
+google-generativeai
+google-auth
