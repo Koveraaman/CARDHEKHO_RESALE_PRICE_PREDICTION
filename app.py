@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
+import os
 import base64
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -130,11 +131,12 @@ with tab2:
     )
 
     # Instantiate the chat model
-    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", api_key="AIzaSyBpufebS9kziyw2coPefRL0wtXDs5wKbjM")
-
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError("Missing GOOGLE_API_KEY. Add it in Streamlit secrets.")
     # Streamlit UI
-    st.title("🚗 Car Dealership Chatbot")
-    st.write("Ask me anything about car models, pricing, and financing options!")
+    st.title("Chatbot")
+    st.write("Ask me some exciting things abouts cars")
 
     # Chat history
     if "messages" not in st.session_state:
@@ -155,7 +157,7 @@ with tab2:
     
         # Get response from chatbot
         messages = [{"role": msg["role"], "content": msg["content"]} for msg in st.session_state["messages"]]
-        response = llm.invoke(messages)
+        response = api_key.invoke(messages)
     
         with st.chat_message("assistant"):
             st.markdown(response.content)
