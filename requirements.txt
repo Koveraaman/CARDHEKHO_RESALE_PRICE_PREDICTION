@@ -1,8 +1,11 @@
-scikit-learn
 streamlit
-openpyxl
-xgboost
-ChatGoogleGenerativeAI
-ChatPromptTemplate
+numpy
+pandas
+scikit-learn
+pickle-mixin
+base64
+langchain
+langchain-google-genai
+python-dotenv
 google-generativeai
 google-auth
